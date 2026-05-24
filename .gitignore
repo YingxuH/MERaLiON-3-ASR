@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+.env
+.idea/
+.vscode/
+
+# Validation log noise (keep summary .txt and .json artifacts)
+scripts/_validation_logs/*.log

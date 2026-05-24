@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meralion-3-asr"
+version = "0.0.1"
+description = "High-level ASR wrapper for MERaLiON-3-3B-ASR with transformers and vLLM backends."
+authors = [{name = "MERaLiON Team"}]
+readme = "readme.md"
+requires-python = ">=3.10"
+license = {text = "MERaLiON-Public-Licence-v3"}
+
+dependencies = [
+  # 4.50.1 is the minimum tested by the MERaLiON team for the trust_remote_code
+  # transformers path. The transformers backend is experimental; vLLM is the
+  # supported production backend.
+  "transformers>=4.50.1",
+  "torch>=2.4",
+  "numpy",
+  "librosa",
+  "soundfile",
+  "packaging",
+  "requests",
+]
+
+[project.optional-dependencies]
+# Pinned to vLLM 0.16.0: the bundled V1 plugin targets vLLM 0.12.0–0.16.x; 0.16.0
+# is the current tested anchor (mirrors vllm_plugin_meralion2 v0.3.0 ranges).
+# fastapi / uvicorn / httpx / python-multipart power the `meralion-3-asr serve`
+# sidecar that fronts an internal `vllm serve` process.
+vllm = [
+  "vllm==0.16.0",
+  "fastapi>=0.115",
+  "uvicorn>=0.30",
+  "httpx>=0.27",
+  "python-multipart>=0.0.9",
+]
+dev = [
+  "pytest>=7",
+  "pylint",
+  "bandit",
+  "build",
+]
+
+[project.urls]
+Modelpage = "https://huggingface.co/MERaLiON/MERaLiON-3-3B-ASR"
+Homepage = "https://github.com/YingxuH/MERaLiON-3-ASR"
+Documentation = "https://github.com/YingxuH/MERaLiON-3-ASR/blob/main/readme.md"
+Changelog = "https://github.com/YingxuH/MERaLiON-3-ASR/blob/main/CHANGELOG.md"
+
+[project.scripts]
+meralion-3-asr = "meralion_3_asr.serve:main"
+
+[project.entry-points."vllm.general_plugins"]
+register_meralion3 = "meralion_3_asr._vllm_plugin:register"
+
+[project.entry-points."vllm.logits_processors"]
+NoRepeatNGramLogitsProcessor = "meralion_3_asr._vllm_plugin.transformers_utils.no_repeat_logits_processor:NoRepeatNGramV1LogitsProcessor"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.package-data]
+meralion_3_asr = ["configs/vllm/*.jinja", "configs/vllm/*.json"]
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+changelog_file = "CHANGELOG.md"
+build_command = "pip3 install build && python3 -m build"
+allow_zero_version = true
+
+[tool.semantic_release.branches.main]
+match = "main"
+
+[tool.semantic_release.commit_parser_options]
+allowed_tags = ["feat", "fix", "perf", "refactor", "docs", "chore", "ci", "test"]

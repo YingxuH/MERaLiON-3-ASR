@@ -1,0 +1,30 @@
+{
+  "date": "2026-05-25",
+  "throughput_samples_per_s": 13.556003953042659,
+  "summary": [
+    {
+      "dataset": "ytb_asr_batch3_chinese",
+      "n": 206,
+      "baseline_2804_http": 0.09971521730158076,
+      "wer_sidecar": 0.11490050221689886,
+      "delta_pp": 1.5185284915318107,
+      "pass": false
+    },
+    {
+      "dataset": "ytb_asr_batch3_malay",
+      "n": 200,
+      "baseline_2804_http": 0.16164275371857312,
+      "wer_sidecar": 0.16611820455442938,
+      "delta_pp": 0.4475450835856265,
+      "pass": true
+    },
+    {
+      "dataset": "ytb_asr_batch1",
+      "n": 384,
+      "baseline_2804_http": 0.09414611661673196,
+      "wer_sidecar": 0.09429976184988861,
+      "delta_pp": 0.015364523315665457,
+      "pass": true
+    }
+  ]
+}

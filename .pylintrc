@@ -1,0 +1,27 @@
+[MASTER]
+py-version=3.9
+persistent=no
+
+[MESSAGES CONTROL]
+disable=
+    arguments-differ,
+    consider-using-from-import,
+    duplicate-code,
+    import-outside-toplevel,
+    no-member,
+    no-name-in-module,
+    no-value-for-parameter,
+    protected-access,
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-instance-attributes,
+    too-many-positional-arguments,
+    unexpected-keyword-arg,
+    ungrouped-imports,
+    wrong-import-order
+
+[FORMAT]
+max-line-length=120
+
+[BASIC]
+good-names=i,j,k,ex,Run,_,B,T,C

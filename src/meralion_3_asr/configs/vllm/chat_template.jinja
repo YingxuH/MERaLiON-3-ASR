@@ -1,0 +1,4 @@
+{{ bos_token }}{% for message in messages %}{% if message['role'] == 'assistant' %}{% set role = 'model' %}{% else %}{% set role = message['role'] %}{% endif %}{% set content = message['content'] | trim %}{% if role == 'user' and '<SpeechHere>' in content and 'Instruction:' not in content %}{% set content = 'Instruction: Please transcribe this speech. \nFollow the text instruction based on the following audio: ' + content %}{% endif %}{{ '<start_of_turn>' + role + '
+' + content + '<end_of_turn>
+' }}{% endfor %}{% if add_generation_prompt %}{{ '<start_of_turn>model
+' }}{% endif %}
