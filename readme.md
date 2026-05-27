@@ -7,7 +7,7 @@ The package wraps the model with a vLLM backend and pre-wires the transcription 
 ## Install
 
 ```bash
-pip install "meralion-3-asr[vllm] @ git+https://github.com/YingxuH/MERaLiON-3-ASR.git"
+pip install "meralion-3-asr[vllm]"
 ```
 
 Requires Python 3.10+ and a CUDA GPU. The `[vllm]` extra installs vLLM and the FastAPI sidecar dependencies. A `transformers`-only backend is included for debugging and is currently experimental; vLLM is the only fully supported backend.
