@@ -7,10 +7,10 @@ The package wraps the model with a vLLM backend and pre-wires the transcription 
 ## Install
 
 ```bash
-pip install "meralion-3-asr[vllm]"
+pip install meralion-3-asr
 ```
 
-Requires Python 3.10+ and a CUDA GPU. The `[vllm]` extra installs vLLM and the FastAPI sidecar dependencies. A `transformers`-only backend is included for debugging and is currently experimental; vLLM is the only fully supported backend.
+Requires Python 3.10+ and a CUDA GPU. vLLM and the FastAPI sidecar dependencies are installed automatically. A `transformers`-only backend is included for debugging and is currently experimental; vLLM is the only fully supported backend.
 
 ## Quick start
 
@@ -68,7 +68,7 @@ curl -F file=@audio.wav -F model=MERaLiON/MERaLiON-3-3B-ASR \
 ## Development
 
 ```bash
-pip install -e ".[dev,vllm]"
+pip install -e ".[dev]"
 pytest -q
 ```
 

@@ -22,20 +22,18 @@ dependencies = [
   "soundfile",
   "packaging",
   "requests",
-]
-
-[project.optional-dependencies]
-# Pinned to vLLM 0.16.0: the bundled V1 plugin targets vLLM 0.12.0–0.16.x; 0.16.0
-# is the current tested anchor (mirrors vllm_plugin_meralion2 v0.3.0 ranges).
-# fastapi / uvicorn / httpx / python-multipart power the `meralion-3-asr serve`
-# sidecar that fronts an internal `vllm serve` process.
-vllm = [
+  # Pinned to vLLM 0.16.0: the bundled V1 plugin targets vLLM 0.12.0–0.16.x;
+  # 0.16.0 is the current tested anchor (mirrors vllm_plugin_meralion2 v0.3.0).
+  # fastapi / uvicorn / httpx / python-multipart power the `meralion-3-asr serve`
+  # sidecar that fronts an internal `vllm serve` process.
   "vllm==0.16.0",
   "fastapi>=0.115",
   "uvicorn>=0.30",
   "httpx>=0.27",
   "python-multipart>=0.0.9",
 ]
+
+[project.optional-dependencies]
 dev = [
   "pytest>=7",
   "pylint",
