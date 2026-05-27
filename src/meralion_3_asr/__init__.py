@@ -30,4 +30,3 @@ exposed in the public API; the model auto-detects the language.
 from .meralion_3_asr import Meralion3ASR
 
 __all__ = ["Meralion3ASR"]
-__version__ = "0.0.4"

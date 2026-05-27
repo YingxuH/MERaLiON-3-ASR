@@ -5,7 +5,6 @@ def test_top_level_import():
     import meralion_3_asr  # noqa: F401
 
     assert hasattr(meralion_3_asr, "Meralion3ASR")
-    assert meralion_3_asr.__version__
 
 
 def test_chunking_module_import():
