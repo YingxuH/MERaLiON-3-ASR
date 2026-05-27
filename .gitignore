@@ -15,6 +15,3 @@ venv/
 .env
 .idea/
 .vscode/
-
-# Validation log noise (keep summary .txt and .json artifacts)
-scripts/_validation_logs/*.log
