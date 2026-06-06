@@ -1,5 +1,12 @@
 # MERaLiON-3-ASR
 
+[![CodeQL](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/codeql.yml/badge.svg)](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/codeql.yml)
+[![Security (Bandit)](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/security.yml/badge.svg)](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/security.yml)
+[![Dependency Audit](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/dependency-audit.yml/badge.svg)](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/dependency-audit.yml)
+[![Pylint](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/pylint.yml/badge.svg)](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/pylint.yml)
+
+These checks run on every push: [CodeQL](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/codeql.yml) static analysis, [Bandit](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/security.yml) security SAST, [pip-audit](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/dependency-audit.yml) dependency CVE scanning, and [Pylint](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/pylint.yml).
+
 A high-level ASR wrapper around [`MERaLiON/MERaLiON-3-3B-ASR`](https://huggingface.co/MERaLiON/MERaLiON-3-3B-ASR).
 
 The package wraps the model with a vLLM backend and pre-wires the transcription prompt, decoding configuration, and 30 s audio chunking on both the offline path and the served path. Callers only provide audio.
