@@ -10,7 +10,7 @@ The package wraps the model with a vLLM backend and pre-wires the transcription 
 pip install meralion-3-asr
 ```
 
-Requires Python 3.10+ and a CUDA GPU. vLLM and the FastAPI sidecar dependencies are installed automatically. A `transformers`-only backend is included for debugging and is currently experimental; vLLM is the only fully supported backend.
+Requires Python 3.10+ and a CUDA GPU. vLLM and the FastAPI sidecar dependencies are installed automatically. **vLLM is the recommended backend.** A pure `transformers` backend is also available (see [Transformers backend](#transformers-backend) below).
 
 ## Quick start
 
@@ -24,6 +24,21 @@ texts = model.transcribe_batch(["a.wav", "b.wav", "c.wav"])   # List[str]
 ```
 
 Inputs may be local file paths, `https://` URLs, base64 data URLs, or `(numpy_array, sample_rate)` tuples. Audio is automatically resampled to mono 16 kHz; long audio is split into 30 s non-overlapping chunks and the per-chunk transcripts are concatenated.
+
+### Transformers backend
+
+vLLM is the recommended backend. A pure `transformers` backend is also available — it loads the model in-process with `AutoModelForSpeechSeq2Seq`, which is handy for debugging or environments without vLLM:
+
+```python
+from meralion_3_asr import Meralion3ASR
+
+model = Meralion3ASR.from_pretrained("MERaLiON/MERaLiON-3-3B-ASR", backend="transformers")
+
+text = model.transcribe("audio.wav")                          # str
+texts = model.transcribe_batch(["a.wav", "b.wav", "c.wav"])   # List[str]
+```
+
+The same prompt, decoding configuration, and 30 s chunking are applied on both backends. See [`docs/backends.md`](docs/backends.md) for a vLLM-vs-transformers comparison.
 
 ## Serving (OpenAI-compatible HTTP)
 

@@ -6,7 +6,7 @@ import numpy as np
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor
 
-from ..prompts import GENERATION_CONFIG, build_prompt
+from ..prompts import GENERATION_CONFIG, build_messages
 from .base import BaseBackend
 
 
@@ -51,7 +51,14 @@ class TransformersBackend(BaseBackend):
             attn_implementation=attn_implementation,
         ).to(self.device).eval()
 
-        self._prompt = build_prompt()
+        # Render the prompt with the model's own chat template. This injects the
+        # turn markers, the generation cue, and crucially the leading <bos> that
+        # Gemma2 is trained with — without <bos> the decoder degenerates into
+        # repetition loops on harder audio. Using apply_chat_template (rather than
+        # a hand-built string) keeps the format locked to whatever the model ships.
+        self._prompt = self.processor.tokenizer.apply_chat_template(
+            build_messages(), tokenize=False, add_generation_prompt=True
+        )
 
     @torch.inference_mode()
     def transcribe_chunks(self, chunks: List[np.ndarray]) -> List[str]:

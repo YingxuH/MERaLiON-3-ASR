@@ -4,12 +4,24 @@ from meralion_3_asr.prompts import (
     ASR_PROMPT,
     GENERATION_CONFIG,
     VLLM_SAMPLING_PARAMS,
+    build_messages,
     build_prompt,
 )
 
 
 def test_prompt_is_pinned():
     assert ASR_PROMPT == "Please transcribe this speech."
+
+
+def test_messages_carry_instruction_and_audio_placeholder():
+    msgs = build_messages()
+    assert msgs[0]["role"] == "user"
+    assert ASR_PROMPT in msgs[0]["content"]
+    assert "<SpeechHere>" in msgs[0]["content"]
+    # build_messages() is rendered via the model's chat_template, which supplies
+    # <bos>/turn markers — so the raw content must NOT pre-bake them.
+    assert "<bos>" not in msgs[0]["content"]
+    assert "<start_of_turn>" not in msgs[0]["content"]
 
 
 def test_chat_template_contains_required_tokens():
