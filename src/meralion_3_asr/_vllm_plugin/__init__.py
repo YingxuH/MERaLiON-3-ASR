@@ -1,4 +1,4 @@
-"""vLLM plugin: registers MERaLiON3ForConditionalGeneration with vLLM.
+"""vLLM plugin: registers MERaLiON3ASRForConditionalGeneration with vLLM.
 
 This sub-package is wired in via the ``vllm.general_plugins`` entry point
 declared in ``pyproject.toml`` so that ``import vllm`` automatically picks
@@ -52,7 +52,7 @@ def _patch_logitsprocs_output_token_tracking() -> None:
 
 
 def register() -> None:
-    """Register MERaLiON3 with vLLM's plugin system.
+    """Register MERaLiON3ASR with vLLM's plugin system.
 
     Supported vLLM versions: >= 0.12.0, < 0.17.0.
 
@@ -80,12 +80,12 @@ def register() -> None:
             f"Supported range: >= {min_supported_version}, < {max_supported_version}"
         )
 
-    from .vllm_model import MERaLiON3ForConditionalGeneration
+    from .vllm_model import MERaLiON3ASRForConditionalGeneration
 
-    if "MERaLiON3ForConditionalGeneration" not in ModelRegistry.get_supported_archs():
+    if "MERaLiON3ASRForConditionalGeneration" not in ModelRegistry.get_supported_archs():
         ModelRegistry.register_model(
-            "MERaLiON3ForConditionalGeneration",
-            MERaLiON3ForConditionalGeneration,
+            "MERaLiON3ASRForConditionalGeneration",
+            MERaLiON3ASRForConditionalGeneration,
         )
 
     _patch_logitsprocs_output_token_tracking()

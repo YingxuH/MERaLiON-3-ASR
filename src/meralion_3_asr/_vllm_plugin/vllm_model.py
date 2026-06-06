@@ -47,20 +47,20 @@ from vllm.model_executor.models.utils import (
 )
 
 
-from .transformers_utils.processing_meralion3 import MERaLiON3Processor
-from .transformers_utils.configuration_meralion3 import MERaLiON3Config
+from .transformers_utils.processing_meralion3 import MERaLiON3ASRProcessor
+from .transformers_utils.configuration_meralion3 import MERaLiON3ASRConfig
 from .transformers_utils.modules import (
     autoset_attn_implementation_for_whisper,
-    MERaLiON3Inputs,
-    MERaLiON3SpeechAudioAdaper,
+    MERaLiON3ASRInputs,
+    MERaLiON3ASRSpeechAudioAdaper,
 )
 
 
-class MERaLiON3ProcessingInfo(BaseProcessingInfo):
-    """Processing context for MERaLiON3: config, processor, and feature extractor access."""
+class MERaLiON3ASRProcessingInfo(BaseProcessingInfo):
+    """Processing context for MERaLiON3ASR: config, processor, and feature extractor access."""
 
     def get_hf_config(self):
-        return self.ctx.get_hf_config(MERaLiON3Config)
+        return self.ctx.get_hf_config(MERaLiON3ASRConfig)
 
     def get_hf_processor(
         self,
@@ -68,8 +68,8 @@ class MERaLiON3ProcessingInfo(BaseProcessingInfo):
         # Ignored in initialization
         sampling_rate: Optional[int] = None,
         **kwargs: object,
-    ) -> MERaLiON3Processor:
-        return self.ctx.get_hf_processor(MERaLiON3Processor, **kwargs)
+    ) -> MERaLiON3ASRProcessor:
+        return self.ctx.get_hf_processor(MERaLiON3ASRProcessor, **kwargs)
 
     def get_feature_extractor(
         self,
@@ -98,8 +98,8 @@ class MERaLiON3ProcessingInfo(BaseProcessingInfo):
         return MultiModalDataParser(target_sr=feature_extractor.sampling_rate)
 
 
-class MERaLiON3DummyInputsBuilder(BaseDummyInputsBuilder[MERaLiON3ProcessingInfo]):
-    """Builds dummy text and multimodal inputs for MERaLiON3 profiling."""
+class MERaLiON3ASRDummyInputsBuilder(BaseDummyInputsBuilder[MERaLiON3ASRProcessingInfo]):
+    """Builds dummy text and multimodal inputs for MERaLiON3ASR profiling."""
 
     def get_dummy_text(self, mm_counts: Mapping[str, int]) -> str:
         num_audios = mm_counts.get("audio", 0)
@@ -127,8 +127,8 @@ class MERaLiON3DummyInputsBuilder(BaseDummyInputsBuilder[MERaLiON3ProcessingInfo
         }
 
 
-class MERaLiON3MultiModalProcessor(BaseMultiModalProcessor[MERaLiON3ProcessingInfo]):
-    """Multi-modal processor for MERaLiON3: parses and encodes audio for the model."""
+class MERaLiON3ASRMultiModalProcessor(BaseMultiModalProcessor[MERaLiON3ASRProcessingInfo]):
+    """Multi-modal processor for MERaLiON3ASR: parses and encodes audio for the model."""
 
     def __init__(self, info, dummy_inputs, *, cache=None):
         super().__init__(info, dummy_inputs, cache=cache)
@@ -237,16 +237,16 @@ class MERaLiON3MultiModalProcessor(BaseMultiModalProcessor[MERaLiON3ProcessingIn
 
 
 @MULTIMODAL_REGISTRY.register_processor(
-    MERaLiON3MultiModalProcessor,
-    info=MERaLiON3ProcessingInfo,
-    dummy_inputs=MERaLiON3DummyInputsBuilder,
+    MERaLiON3ASRMultiModalProcessor,
+    info=MERaLiON3ASRProcessingInfo,
+    dummy_inputs=MERaLiON3ASRDummyInputsBuilder,
 )
-class MERaLiON3ForConditionalGeneration(
+class MERaLiON3ASRForConditionalGeneration(
     nn.Module,
     SupportsMultiModal,
     SupportsPP,
 ):
-    """vLLM model implementation for MERaLiON3 targeting vLLM >= 0.12.0."""
+    """vLLM model implementation for MERaLiON3ASR targeting vLLM >= 0.12.0."""
 
     @classmethod
     def get_placeholder_str(cls, modality: str, i: int) -> Optional[str]:
@@ -275,7 +275,7 @@ class MERaLiON3ForConditionalGeneration(
         )
         self.speech_encoder = WhisperEncoder(config.speech_config)
         self.ln_speech = nn.LayerNorm(config.speech_config.d_model)
-        self.speech_audio_adapter = MERaLiON3SpeechAudioAdaper(
+        self.speech_audio_adapter = MERaLiON3ASRSpeechAudioAdaper(
             audio_hidden_size=config.speech_config.d_model,
             text_hidden_size=config.text_config.hidden_size,
             speech_mlp_scale_factor=getattr(config, "speech_mlp_scale_factor", 15),
@@ -328,7 +328,7 @@ class MERaLiON3ForConditionalGeneration(
     def _parse_and_validate_audio_input(
         self,
         **kwargs: object,
-    ) -> Optional[MERaLiON3Inputs]:
+    ) -> Optional[MERaLiON3ASRInputs]:
         input_features = kwargs.pop("input_features", None)
         feature_attention_mask = kwargs.pop("feature_attention_mask", None)
 
@@ -345,14 +345,14 @@ class MERaLiON3ForConditionalGeneration(
                 "Incorrect type of audio input features. "
                 f"Got type: {type(input_features)}"
             )
-        return MERaLiON3Inputs(
+        return MERaLiON3ASRInputs(
             input_features=input_features,
             feature_attention_mask=feature_attention_mask,
         )
 
     def _process_audio_input(
         self,
-        audio_input: MERaLiON3Inputs,
+        audio_input: MERaLiON3ASRInputs,
     ) -> torch.Tensor:
         input_features = audio_input["input_features"].to(self.speech_encoder.dtype)
         feature_attention_mask = audio_input["feature_attention_mask"]

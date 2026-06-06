@@ -9,8 +9,8 @@ from transformers.utils.import_utils import is_flash_attn_2_available
 
 
 # === Audio Inputs === #
-class MERaLiON3Inputs(TypedDict):
-    """Typed dict for batched audio inputs to the MERaLiON3 speech encoder."""
+class MERaLiON3ASRInputs(TypedDict):
+    """Typed dict for batched audio inputs to the MERaLiON3ASR speech encoder."""
 
     input_features: torch.Tensor
     """Shape: 
@@ -23,8 +23,8 @@ class MERaLiON3Inputs(TypedDict):
 
 
 # === Audio Encoder === #
-class MERaLiON3SpeechAudioAdaper(nn.Module):
-    """Speech audio adapter for MERaLiON3 model.
+class MERaLiON3ASRSpeechAudioAdaper(nn.Module):
+    """Speech audio adapter for MERaLiON3ASR model.
 
     Adapts speech encoder outputs to match text decoder hidden size.
     """
@@ -45,7 +45,7 @@ class MERaLiON3SpeechAudioAdaper(nn.Module):
             speech_mlp_use_projection: Whether to use projection layers.
         """
 
-        super(MERaLiON3SpeechAudioAdaper, self).__init__()
+        super(MERaLiON3ASRSpeechAudioAdaper, self).__init__()
         self.speech_mlp_scale_factor = speech_mlp_scale_factor
         self.speech_mlp_use_projection = speech_mlp_use_projection
 

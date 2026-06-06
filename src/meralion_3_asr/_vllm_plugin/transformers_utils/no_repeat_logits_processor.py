@@ -1,4 +1,4 @@
-"""No-repeat n-gram logits processor used by MERaLiON3 generation.
+"""No-repeat n-gram logits processor used by MERaLiON3ASR generation.
 
 Two implementations are provided:
 

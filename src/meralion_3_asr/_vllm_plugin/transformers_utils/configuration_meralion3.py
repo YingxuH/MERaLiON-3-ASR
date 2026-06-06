@@ -1,4 +1,4 @@
-"""MERaLiON3 model configuration"""
+"""MERaLiON3ASR model configuration"""
 
 from typing import Optional, Union
 
@@ -10,11 +10,11 @@ from transformers.utils import logging
 logger = logging.get_logger(__name__)
 
 
-class MERaLiON3Config(PretrainedConfig):
+class MERaLiON3ASRConfig(PretrainedConfig):
     r"""
-    This is the configuration class to store the configuration of a [`MERaLiON3ForConditionalGeneration`]. It is used to instantiate an
-    MERaLiON3 model according to the specified arguments, defining the model architecture. Instantiating a configuration
-    with the defaults will yield a similar configuration to that of the MERaLiON3.
+    This is the configuration class to store the configuration of a [`MERaLiON3ASRForConditionalGeneration`]. It is used to instantiate an
+    MERaLiON3ASR model according to the specified arguments, defining the model architecture. Instantiating a configuration
+    with the defaults will yield a similar configuration to that of the MERaLiON3ASR.
 
     Configuration objects inherit from [`PretrainedConfig`] and can be used to control the model outputs. Read the
     documentation from [`PretrainedConfig`] for more information.
@@ -28,7 +28,7 @@ class MERaLiON3Config(PretrainedConfig):
             The image token index to encode the image prompt.
     """
 
-    model_type = "meralion3"
+    model_type = "meralion3_asr"
     is_composition = False
 
     def __init__(
@@ -39,7 +39,7 @@ class MERaLiON3Config(PretrainedConfig):
         speech_token_index: int = 255999,
         **kwargs: object,
     ) -> None:
-        """Initialize MERaLiON3 configuration.
+        """Initialize MERaLiON3ASR configuration.
 
         Args:
             speech_config: Speech encoder configuration (WhisperConfig or dict).

@@ -1,4 +1,4 @@
-"""Processor class for MERaLiON3."""
+"""Processor class for MERaLiON3ASR."""
 
 from typing import List, Optional, Tuple, Union
 
@@ -14,12 +14,12 @@ from transformers.tokenization_utils_base import (
 
 
 # copied from transformers.models.qwen2_audio.processing_qwen2_audio.Qwen2AudioProcessor
-class MERaLiON3Processor(ProcessorMixin):
+class MERaLiON3ASRProcessor(ProcessorMixin):
     r"""
-    Constructs a MERaLiON3 processor which wraps a whisper feature extractor and a gemma tokenizer into a single processor.
+    Constructs a MERaLiON3ASR processor which wraps a whisper feature extractor and a gemma tokenizer into a single processor.
 
-    [`MERaLiON3Processor`] offers all the functionalities of [`WhisperFeatureExtractor`] and [`GemmaTokenizer`]. See the
-    [`~MERaLiON3Processor.__call__`] and [`~MERaLiON3Processor.decode`] for more information.
+    [`MERaLiON3ASRProcessor`] offers all the functionalities of [`WhisperFeatureExtractor`] and [`GemmaTokenizer`]. See the
+    [`~MERaLiON3ASRProcessor.__call__`] and [`~MERaLiON3ASRProcessor.decode`] for more information.
 
     Args:
         feature_extractor ([`WhisperFeatureExtractor`], *optional*):
@@ -186,7 +186,7 @@ class MERaLiON3Processor(ProcessorMixin):
                 )
             if audio.ndim > 1:
                 raise ValueError(
-                    f"MERaLiON3 only accepts mono channel audio. "
+                    f"MERaLiON3ASR only accepts mono channel audio. "
                     f"Audio at index {i} has {audio.ndim} dimensions "
                     f"(expected 1D)"
                 )
