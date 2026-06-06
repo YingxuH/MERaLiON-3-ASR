@@ -39,10 +39,12 @@ class TransformersBackend(BaseBackend):
         self.dtype = dtype
         self.batch_size = batch_size
 
-        self.processor = AutoProcessor.from_pretrained(
+        # model_path is operator-supplied (a local dir or a trusted hub id);
+        # revision pinning is left to the caller, so suppress B615 here.
+        self.processor = AutoProcessor.from_pretrained(  # nosec B615
             model_path, trust_remote_code=True
         )
-        self.model = AutoModelForSpeechSeq2Seq.from_pretrained(
+        self.model = AutoModelForSpeechSeq2Seq.from_pretrained(  # nosec B615
             model_path,
             trust_remote_code=True,
             dtype=dtype,

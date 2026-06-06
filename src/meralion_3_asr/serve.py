@@ -20,7 +20,7 @@ import os
 import shlex
 import signal
 import socket
-import subprocess
+import subprocess  # nosec B404 - used only to spawn the trusted internal vllm
 import sys
 import time
 import urllib.error
@@ -104,7 +104,9 @@ def _spawn_internal_vllm(argv: List[str], log_path: Optional[str]):
     env.setdefault("VLLM_MAX_AUDIO_CLIP_FILESIZE_MB", "512")
     stdout = open(log_path, "ab", buffering=0) if log_path else None
     stderr = stdout
-    return subprocess.Popen(
+    # argv is built internally by _build_vllm_argv (no shell, no user-supplied
+    # string), so this is not a shell-injection vector.
+    return subprocess.Popen(  # nosec B603
         argv, env=env, stdout=stdout, stderr=stderr,
         preexec_fn=os.setsid,
     )
@@ -127,7 +129,9 @@ def _serve(argv: List[str]) -> int:
     )
     parser.add_argument("--model", default="MERaLiON/MERaLiON-3-3B-ASR")
     parser.add_argument("--served-model-name", default=None)
-    parser.add_argument("--host", default="0.0.0.0")
+    parser.add_argument("--host", default="127.0.0.1",
+                        help="Bind address. Defaults to localhost; pass "
+                             "0.0.0.0 to expose the sidecar on all interfaces.")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--internal-port", type=int, default=0,
                         help="Internal vLLM port; 0 = auto-pick a free port.")
