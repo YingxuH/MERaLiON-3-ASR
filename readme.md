@@ -4,8 +4,9 @@
 [![Security (Bandit)](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/security.yml/badge.svg)](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/security.yml)
 [![Dependency Audit](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/dependency-audit.yml/badge.svg)](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/dependency-audit.yml)
 [![Pylint](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/pylint.yml/badge.svg)](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/pylint.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/YingxuH/MERaLiON-3-ASR/badge)](https://securityscorecards.dev/viewer/?uri=github.com/YingxuH/MERaLiON-3-ASR)
 
-These checks run on every push: [CodeQL](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/codeql.yml) static analysis, [Bandit](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/security.yml) security SAST, [pip-audit](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/dependency-audit.yml) dependency CVE scanning, and [Pylint](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/pylint.yml).
+These checks run on every push: [CodeQL](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/codeql.yml) static analysis, [Bandit](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/security.yml) security SAST, [pip-audit](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/dependency-audit.yml) dependency CVE scanning, and [Pylint](https://github.com/YingxuH/MERaLiON-3-ASR/actions/workflows/pylint.yml); plus [OpenSSF Scorecard](https://securityscorecards.dev/viewer/?uri=github.com/YingxuH/MERaLiON-3-ASR) supply-chain analysis.
 
 A high-level ASR wrapper around [`MERaLiON/MERaLiON-3-3B-ASR`](https://huggingface.co/MERaLiON/MERaLiON-3-3B-ASR).
 
@@ -96,4 +97,4 @@ pytest -q
 
 ## License
 
-[MERaLiON-Public-Licence-v3](https://huggingface.co/datasets/MERaLiON/MERaLiON_Public_Licence/blob/main/MERaLiON-Public-Licence-v3.pdf)
+[MERaLiON-3-Public-Licence](https://huggingface.co/datasets/MERaLiON/MERaLiON_Public_Licence/blob/main/MERaLiON-3-Public-Licence.pdf)

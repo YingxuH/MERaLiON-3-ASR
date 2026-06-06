@@ -9,7 +9,7 @@ description = "High-level ASR wrapper for MERaLiON-3-3B-ASR with transformers an
 authors = [{name = "MERaLiON Team"}]
 readme = "readme.md"
 requires-python = ">=3.10"
-license = {text = "MERaLiON-Public-Licence-v3"}
+license = {text = "MERaLiON-3-Public-Licence"}
 
 dependencies = [
   # 4.50.1 is the minimum tested by the MERaLiON team for the trust_remote_code
