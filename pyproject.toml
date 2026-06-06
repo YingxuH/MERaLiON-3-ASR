@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "meralion-3-asr"
-version = "0.0.2"
+version = "0.1.0"
 description = "High-level ASR wrapper for MERaLiON-3-3B-ASR with transformers and vLLM backends."
 authors = [{name = "MERaLiON Team"}]
 readme = "readme.md"
@@ -55,6 +55,7 @@ register_meralion3 = "meralion_3_asr._vllm_plugin:register"
 
 [project.entry-points."vllm.logits_processors"]
 NoRepeatNGramLogitsProcessor = "meralion_3_asr._vllm_plugin.transformers_utils.no_repeat_logits_processor:NoRepeatNGramV1LogitsProcessor"
+
 
 
 [tool.setuptools.packages.find]
