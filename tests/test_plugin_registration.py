@@ -13,4 +13,4 @@ def test_register_is_idempotent():
 
     from vllm import ModelRegistry
 
-    assert "MERaLiON3ForConditionalGeneration" in ModelRegistry.get_supported_archs()
+    assert "MERaLiON3ASRForConditionalGeneration" in ModelRegistry.get_supported_archs()
