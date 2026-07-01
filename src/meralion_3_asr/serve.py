@@ -191,7 +191,7 @@ def _serve(argv: List[str]) -> int:
         _cleanup()
         raise ImportError(
             "uvicorn is required to serve. Install with "
-            "`pip install meralion-3-asr[vllm]`."
+            "`pip install meralion-3-asr`."
         ) from e
     from .gateway import create_app
 

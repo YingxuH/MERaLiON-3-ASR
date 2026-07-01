@@ -61,11 +61,18 @@ Common flags:
 | Flag | Default | Description |
 |---|---|---|
 | `--model` | `MERaLiON/MERaLiON-3-3B-ASR` | HF repo id or local path. |
-| `--host` | `0.0.0.0` | Sidecar bind host. |
+| `--host` | `127.0.0.1` | Sidecar bind host. Pass `0.0.0.0` to expose it on all interfaces. |
 | `--port` | `8000` | Sidecar (user-facing) port. |
+| `--gpu-memory-utilization` | `0.85` | Fraction of GPU memory the internal vLLM may use. |
+| `--max-num-seqs` | `64` | Max concurrent sequences (throughput vs. memory). |
+| `--max-model-len` | `1300` | Max context length. |
+| `--dtype` | `bfloat16` | Compute dtype. |
 | `--tensor-parallel-size` | `1` | Number of GPUs for the internal vLLM. |
 
-Any unknown `--key value` pairs are forwarded to the internal `vllm serve`.
+Any other `--key value` pair is forwarded verbatim to the internal `vllm serve` (e.g.
+`--quantization fp8`), so you can set any vLLM engine argument without editing the package.
+Run `vllm serve --help` or see the vLLM [documentation](https://docs.vllm.ai/) and
+[repository](https://github.com/vllm-project/vllm) for the full list.
 
 Call it with the OpenAI Python SDK:
 
@@ -87,6 +94,52 @@ or raw HTTP:
 curl -F file=@audio.wav -F model=MERaLiON/MERaLiON-3-3B-ASR \
     http://localhost:8000/v1/audio/transcriptions
 ```
+
+## Running `vllm serve` directly
+
+Installing this package registers the model with vLLM as a plugin, so you can skip the
+sidecar and serve it with vLLM's own OpenAI-compatible server. Pass the bundled chat
+template so the model transcribes from audio alone (this is what the sidecar does internally):
+
+```bash
+pip install meralion-3-asr   # brings vLLM (incl. FlashInfer) and registers the plugin
+
+CHAT=$(python -c "from importlib.resources import files; print(files('meralion_3_asr').joinpath('configs','vllm','chat_template.jinja'))")
+
+vllm serve MERaLiON/MERaLiON-3-3B-ASR \
+    --trust-remote-code \
+    --attention-backend FLASHINFER \
+    --chat-template "$CHAT" --chat-template-content-format string \
+    --gpu-memory-utilization 0.5 --max-num-seqs 32
+```
+
+vLLM auto-discovers the plugin and resolves the model architecture. `--trust-remote-code`
+is required (the model config uses `auto_map`), and `--attention-backend FLASHINFER` is
+required for the model's Gemma2 softcapping.
+
+Query the native `/v1/chat/completions` route, sending the audio as a base64 WAV `audio_url`
+content part (no text prompt — the chat template supplies the transcription instruction).
+The request's `model` field must match the name it is served under (the `--model` value,
+i.e. the local path if you passed one), and the URL port must match `--port` (default `8000`):
+
+```python
+import base64, httpx
+
+audio_b64 = base64.b64encode(open("audio.wav", "rb").read()).decode()
+resp = httpx.post("http://localhost:8000/v1/chat/completions", timeout=120, json={
+    "model": "MERaLiON/MERaLiON-3-3B-ASR",
+    "messages": [{"role": "user", "content": [
+        {"type": "audio_url", "audio_url": {"url": f"data:audio/wav;base64,{audio_b64}"}},
+    ]}],
+    "temperature": 0, "max_tokens": 512,
+})
+print(resp.json()["choices"][0]["message"]["content"])
+```
+
+Unlike the sidecar there is **no** server-side 30 s chunking — send clips ≤ 30 s, chunk
+longer audio yourself, or just use `meralion-3-asr serve` (which handles chunking and
+prompt-wiring). See the vLLM [documentation](https://docs.vllm.ai/) /
+[repository](https://github.com/vllm-project/vllm) for the full engine-argument list.
 
 ## Development
 

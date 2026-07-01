@@ -1,6 +1,6 @@
 """Minimal example: transcribe one wav file with the vLLM backend.
 
-Requires ``pip install meralion-3-asr[vllm]``.
+Requires ``pip install meralion-3-asr`` (vLLM is a core dependency).
 """
 
 import sys

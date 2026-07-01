@@ -26,8 +26,8 @@
 # backend), with two deliberate changes: --host defaults to 0.0.0.0 so the
 # endpoint is reachable, and the port is fixed (not auto-picked).
 #
-# Prereqs: the venv that has `meralion-3-asr[vllm]` installed (vLLM 0.16 +
-# flashinfer). Run from any dir.
+# Prereqs: a venv with `meralion-3-asr` installed (vLLM 0.16 + flashinfer come
+# in as dependencies). Run from any dir.
 #
 # Usage:
 #     ./_internal_native_vllm_serve.sh <model-path-or-hub-id> [port] [gpu_id]

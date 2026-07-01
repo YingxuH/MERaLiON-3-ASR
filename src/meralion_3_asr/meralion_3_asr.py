@@ -16,7 +16,7 @@ class Meralion3ASR:
 
     * ``backend="transformers"`` (default): in-process HuggingFace model.
     * ``backend="vllm"``: in-process vLLM engine with the bundled plugin.
-      Requires ``pip install meralion-3-asr[vllm]``.
+      Requires ``pip install meralion-3-asr``.
 
     Example::
 
