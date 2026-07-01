@@ -110,7 +110,7 @@ vllm serve MERaLiON/MERaLiON-3-3B-ASR \
     --trust-remote-code \
     --attention-backend FLASHINFER \
     --chat-template "$CHAT" --chat-template-content-format string \
-    --gpu-memory-utilization 0.5 --max-num-seqs 32
+    --gpu-memory-utilization 0.85 --max-num-seqs 64
 ```
 
 vLLM auto-discovers the plugin and resolves the model architecture. `--trust-remote-code`
