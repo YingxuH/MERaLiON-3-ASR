@@ -34,8 +34,8 @@ class VllmBackend(BaseBackend):
             from vllm import LLM, SamplingParams
         except ImportError as e:
             raise ImportError(
-                "vLLM backend requires the optional vllm dependency. "
-                "Install with: pip install meralion-3-asr[vllm]"
+                "vLLM backend requires vllm (a core dependency). "
+                "Install with: pip install meralion-3-asr"
             ) from e
 
         # Force the plugin to register before the engine starts.
